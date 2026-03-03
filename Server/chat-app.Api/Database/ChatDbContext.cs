@@ -14,5 +14,31 @@ public class ChatDbContext(DbContextOptions<ChatDbContext> options) : DbContext(
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<User>(entity =>
+        {
+            entity.ToTable(name: "User");
+            entity.HasMany(user => user.Communities).WithMany(community => community.Users);
+        });
+
+        builder.Entity<Community>(entity =>
+        {
+            entity.ToTable(name: "Community");
+            entity
+                .HasMany(community => community.Channels)
+                .WithOne(channel => channel.Community)
+                .HasForeignKey(channel => channel.CommunityId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<Channel>(entity =>
+        {
+            entity.ToTable("Channel");
+            entity
+                .HasOne(channel => channel.Community)
+                .WithMany(community => community.Channels)
+                .HasForeignKey(channel => channel.CommunityId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
     }
 }
