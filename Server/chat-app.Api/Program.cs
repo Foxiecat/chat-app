@@ -1,3 +1,6 @@
+using chat_app.Api.Database;
+using Microsoft.EntityFrameworkCore;
+
 namespace chat_app.Api;
 
 public class Program
@@ -5,6 +8,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddDbContext<ChatDbContext>(options =>
+            options.UseNpgsql(
+                builder.Configuration.GetConnectionString("ChatDbContextConnection"),
+                optionsBuilder => optionsBuilder.MigrationsAssembly("chat_app.Api")
+            )
+        );
 
         // Add services to the container.
         builder.Services.AddAuthorization();
