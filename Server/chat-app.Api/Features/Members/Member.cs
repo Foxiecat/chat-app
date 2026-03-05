@@ -1,8 +1,8 @@
 using chat_app.Api.Features.Communities;
 
-namespace chat_app.Api.Features.Users
+namespace chat_app.Api.Features.Members
 {
-    public class User
+    public class Member
     {
         public Guid Id { get; set; }
         public required string Username { get; init; }
