@@ -9,6 +9,8 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddHttpContextAccessor();
+
         builder.Services.AddDbContext<ChatDbContext>(options =>
             options.UseNpgsql(
                 builder.Configuration.GetConnectionString("ChatDbContextConnection"),
