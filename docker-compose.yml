@@ -1,14 +1,15 @@
 services:
+  api:
+    environment:
+      - ConnectionStrings__Default=Host=database;Port=5432;Database=chatapp;Username=${DB_USER};Password=${DB_PASSWORD}
   database:
     image: postgres:16
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
-      POSTGRES_DB: chatdb
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
-      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - chat-data:/var/lib/postgresql/data
 
 volumes:

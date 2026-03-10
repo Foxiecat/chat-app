@@ -13,7 +13,7 @@ public class Program
 
         builder.Services.AddDbContext<ChatDbContext>(options =>
             options.UseNpgsql(
-                builder.Configuration.GetConnectionString("ChatDbContextConnection"),
+                builder.Configuration.GetConnectionString("Default"),
                 optionsBuilder => optionsBuilder.MigrationsAssembly("chat_app.Api")
             )
         );
