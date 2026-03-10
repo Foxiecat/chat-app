@@ -12,10 +12,7 @@ public class Program
         builder.Services.AddHttpContextAccessor();
 
         builder.Services.AddDbContext<ChatDbContext>(options =>
-            options.UseNpgsql(
-                builder.Configuration.GetConnectionString("Default"),
-                optionsBuilder => optionsBuilder.MigrationsAssembly("chat_app.Api")
-            )
+            options.UseNpgsql(builder.Configuration.GetConnectionString("Default"))
         );
 
         // Add services to the container.
@@ -25,6 +22,12 @@ public class Program
         builder.Services.AddOpenApi();
 
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
+            db.Database.Migrate();
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
